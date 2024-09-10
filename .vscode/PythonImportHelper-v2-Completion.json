@@ -1,0 +1,117 @@
+[
+    {
+        "label": "Dataset",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "DataLoader",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "ImdbDataSet",
+        "kind": 6,
+        "importPath": "TSC.dataset",
+        "description": "TSC.dataset",
+        "peekOfCode": "class ImdbDataSet(Dataset):\n    def __init__(self,train=True):\n        super(ImdbDataSet,self).__init__()\n        self.train_set_path = './aclImdb/train'\n        self.test_set_path = './aclImdb/test'\n        self.data_path = self.train_set_path if train else self.test_set_path\n        temp_data_path = [self.data_path+'/pos',self.data_path+'/neg']\n        self.total_data_path = []\n        for path in temp_data_path:\n            dir_list = os.listdir(path)",
+        "detail": "TSC.dataset",
+        "documentation": {}
+    },
+    {
+        "label": "tokenlize",
+        "kind": 2,
+        "importPath": "TSC.dataset",
+        "description": "TSC.dataset",
+        "peekOfCode": "def tokenlize(content):\n    content = re.sub(\"<.*?>\",\" \",content)\n    filters = ['\\t','\\n','\\x97','\\x96','#','$','%','&','\\.',':','\\(','\\)','\\*']\n    content = re.sub(\"|\".join(filters),' ',content,flags=re.S)\n    tokens = [i.strip().lower() for i in content.split()]\n    return tokens\nclass ImdbDataSet(Dataset):\n    def __init__(self,train=True):\n        super(ImdbDataSet,self).__init__()\n        self.train_set_path = './aclImdb/train'",
+        "detail": "TSC.dataset",
+        "documentation": {}
+    },
+    {
+        "label": "collate_fn",
+        "kind": 2,
+        "importPath": "TSC.dataset",
+        "description": "TSC.dataset",
+        "peekOfCode": "def collate_fn(batch):\n    content,label = list(zip(*batch))\n    return content,label\ndef get_dataloader(train=True):\n    imdb_dataset = ImdbDataSet(train=train)\n    dataloader = DataLoader(dataset=imdb_dataset,batch_size=2,shuffle=True,collate_fn=collate_fn)\n    return dataloader\nfor idx,(input,target) in enumerate(get_dataloader()):\n    print(idx) \n    print(input) ",
+        "detail": "TSC.dataset",
+        "documentation": {}
+    },
+    {
+        "label": "get_dataloader",
+        "kind": 2,
+        "importPath": "TSC.dataset",
+        "description": "TSC.dataset",
+        "peekOfCode": "def get_dataloader(train=True):\n    imdb_dataset = ImdbDataSet(train=train)\n    dataloader = DataLoader(dataset=imdb_dataset,batch_size=2,shuffle=True,collate_fn=collate_fn)\n    return dataloader\nfor idx,(input,target) in enumerate(get_dataloader()):\n    print(idx) \n    print(input) \n    print(target) \n    break",
+        "detail": "TSC.dataset",
+        "documentation": {}
+    },
+    {
+        "label": "Word2Sequece",
+        "kind": 6,
+        "importPath": "TSC.word2sequence",
+        "description": "TSC.word2sequence",
+        "peekOfCode": "class Word2Sequece():\n    UNK_TAG = 'UNK'\n    PAD_TAG = 'PAD'\n    UNK = 0\n    PAD = 1\n    def __init__(self):\n        self.dict = {\n            self.UNK_TAG:self.UNK,\n            self.PAD_TAG:self.PAD\n        }    ",
+        "detail": "TSC.word2sequence",
+        "documentation": {}
+    },
+    {
+        "label": "ws",
+        "kind": 5,
+        "importPath": "TSC.word2sequence",
+        "description": "TSC.word2sequence",
+        "peekOfCode": "ws = Word2Sequece()\nws.fit(['我','是','谁'])\nws.fit(['我','是','我'])\nws.build_vocab(min = 0)\nprint(ws.dict)\nret = ws.transform(['我','爱','北京'],max_len=10)\nprint(ret)\nret = ws.inverse_transform(ret)\nprint(ret)",
+        "detail": "TSC.word2sequence",
+        "documentation": {}
+    },
+    {
+        "label": "ws.build_vocab(min",
+        "kind": 5,
+        "importPath": "TSC.word2sequence",
+        "description": "TSC.word2sequence",
+        "peekOfCode": "ws.build_vocab(min = 0)\nprint(ws.dict)\nret = ws.transform(['我','爱','北京'],max_len=10)\nprint(ret)\nret = ws.inverse_transform(ret)\nprint(ret)",
+        "detail": "TSC.word2sequence",
+        "documentation": {}
+    },
+    {
+        "label": "ret",
+        "kind": 5,
+        "importPath": "TSC.word2sequence",
+        "description": "TSC.word2sequence",
+        "peekOfCode": "ret = ws.transform(['我','爱','北京'],max_len=10)\nprint(ret)\nret = ws.inverse_transform(ret)\nprint(ret)",
+        "detail": "TSC.word2sequence",
+        "documentation": {}
+    },
+    {
+        "label": "ret",
+        "kind": 5,
+        "importPath": "TSC.word2sequence",
+        "description": "TSC.word2sequence",
+        "peekOfCode": "ret = ws.inverse_transform(ret)\nprint(ret)",
+        "detail": "TSC.word2sequence",
+        "documentation": {}
+    }
+]
