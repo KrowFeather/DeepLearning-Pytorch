@@ -1,12 +1,12 @@
 import pickle
 
-from word2sequence import Word2Sequece
+from word2sequence import Word2Sequence
 import os
 from dataset import tokenlize
 from tqdm import tqdm
 
 if __name__ == '__main__':
-    ws = Word2Sequece()
+    ws = Word2Sequence()
     path = '../../dataset/aclImdb/train'
     temp_data_path = [os.path.join(path, 'pos'), os.path.join(path, 'neg')]
     for data_path in temp_data_path:

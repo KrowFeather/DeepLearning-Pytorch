@@ -1,4 +1,4 @@
-class Word2Sequece:
+class Word2Sequence:
     UNK_TAG = 'UNK'
     PAD_TAG = 'PAD'
     UNK = 0
