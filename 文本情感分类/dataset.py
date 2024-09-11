@@ -1,6 +1,8 @@
+import torch
 from torch.utils.data import Dataset, DataLoader
 import os
 import re
+from lib import ws, max_len
 
 
 def tokenlize(content):
@@ -38,17 +40,19 @@ class ImdbDataSet(Dataset):
 
 def collate_fn(batch):
     content, label = list(zip(*batch))
+    content = [ws.transform(i, max_len=max_len) for i in content]
+    content = torch.LongTensor(content)
+    label = torch.LongTensor(label)
     return content, label
 
 
 def get_dataloader(train=True):
     imdb_dataset = ImdbDataSet(train=train)
-    dataloader = DataLoader(dataset=imdb_dataset, batch_size=2, shuffle=True, collate_fn=collate_fn)
+    dataloader = DataLoader(dataset=imdb_dataset, batch_size=128, shuffle=True, collate_fn=collate_fn)
     return dataloader
 
-
-for idx, (input, target) in enumerate(get_dataloader()):
-    print(idx)
-    print(input)
-    print(target)
-    break
+# for idx, (input, target) in enumerate(get_dataloader()):
+#     print(idx)
+#     print(input)
+#     print(target)
+#     break

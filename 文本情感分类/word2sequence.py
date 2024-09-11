@@ -41,13 +41,15 @@ class Word2Sequece:
     def inverse_transform(self, indices):
         return [self.inverse_dict.get(idx) for idx in indices]
 
+    def __len__(self):
+        return len(self.dict)
 
-ws = Word2Sequece()
-ws.fit(['我', '是', '谁'])
-ws.fit(['我', '是', '我'])
-ws.build_vocab(min=0)
-print(ws.dict)
-ret = ws.transform(['我', '爱', '北京'], max_len=10)
-print(ret)
-ret = ws.inverse_transform(ret)
-print(ret)
+# ws = Word2Sequece()
+# ws.fit(['我', '是', '谁'])
+# ws.fit(['我', '是', '我'])
+# ws.build_vocab(min=0)
+# print(ws.dict)
+# ret = ws.transform(['我', '爱', '北京'], max_len=10)
+# print(ret)
+# ret = ws.inverse_transform(ret)
+# print(ret)
