@@ -8,9 +8,9 @@ import copy
 
 
 # Embedding层，用来进行word2Vec
-class InputModel(nn.Module):
+class Embedding(nn.Module):
     def __init__(self, vocab_size, hidden_dim):
-        super(InputModel, self).__init__()
+        super(Embedding, self).__init__()
         self.embedding = nn.Embedding(vocab_size, hidden_dim)
         self.hidden_dim = hidden_dim
 
@@ -26,7 +26,7 @@ d_model = 512
 
 # vocab_size = 1000
 # x = torch.LongTensor([[1, 2, 3, 4], [2, 6, 7, 9]])
-# model = InputModel(vocab_size, d_model)
+# model = Embedding(vocab_size, d_model)
 # embr = model(x)
 # print(embr)
 
@@ -358,3 +358,30 @@ ed = EncoderDecoder(encoder, decoder, source_embed, target_embed, gen)
 ed_result = ed(source, target, source_mask, target_mask)
 print(ed_result)
 print(ed_result.shape)
+
+
+def make_model(source_vocab, target_vocab, N=6, d_model=512, d_ff=2048, head=8, dropout=0.2):
+    c = copy.deepcopy
+    attn = MultiHeadAttention(head, d_model)
+    ff = PositionwiseFeedForward(d_model, d_ff, dropout)
+    position = PositionalEncoding(d_model, dropout)
+    model = EncoderDecoder(
+        Encoder(EncoderLayer(d_model, dropout,c(attn), c(ff)), N),
+        Decoder(DecoderLayer(d_model,c(attn), c(attn), c(ff), dropout), N),
+        nn.Sequential(Embedding(d_model,source_vocab),c(position)),
+        nn.Sequential(Embedding(d_model,target_vocab),c(position)),
+        Generator(d_model, target_vocab)
+    )
+
+    for p in model.parameters():
+        if p.dim()>1:
+            nn.init.xavier_uniform_(p)
+
+    return model
+
+if __name__ == '__main__':
+    source_vocab = 11
+    target_vocab = 11
+    N = 6
+    model = make_model(source_vocab, target_vocab,N)
+    print(model)
